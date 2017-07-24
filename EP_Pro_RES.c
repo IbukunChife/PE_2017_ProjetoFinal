@@ -14,11 +14,11 @@ RESUMO DO PROJETO:
 
 												Resoluçao:
 */
-									  
+
 #include<stdio.h>
 #include<stdlib.h>
 
-/* Numero do cheque = NuDoChK 
+/* Numero do cheque = NuDoChK
  * Agência = Ag
  * Numero da conta corrente = NuDaCCor
  * DV = DV
@@ -30,98 +30,102 @@ typedef struct Cheque{
 	float Valor;
 	char Nome[20];
 	}Cheque;
-	
-int Armazenar(Cheque  ***info){
+/*
+int Armazenar(Cheque  *info){
 	FILE *arq;
-	if ((arq = fopen("Information.txt","w")) == NULL){
+	if ((arq = fopen("Information.txt","wb")) == NULL){
 		printf("Erro na abertura \n");
 		system("pause");
 		exit(1);
 	}
-	fprintf( arq, " Nome: %s  Valor: %d \n",***infoNome, ***info.Valor);
-	fprintf( arq, " Nome: %s  Valor: %d \n",***info.NuDaCCor, ***info.DV);
-	fprintf( arq, " Nome: %s  Valor: %d \n",***info.NuDoChK, ***info.Ag);
+	fprintf( arq, " Nome: %s  Valor: %d \n",info->Nome, info->Valor);
+	fprintf( arq, " Nome: %s  Valor: %d \n",info->NuDaCCor, info->DV);
+	fprintf( arq, " Nome: %s  Valor: %d \n",info->NuDoChK, info->Ag);
 	fprintf(arq, "\n");
 	rewind(arq);
 	fclose(arq);
-	
-return 0;
-}
 
-int Valida(int nc , int dv , Cheque **informacao ){ // nc = NuDaCCor e dv = DV
-	int i=0,j=1,x=0,k=0;
-	int Inv, res, resf;
-	
-		// contando o numero de digito de nc, i sendo o contador
-		while (nc>=0){
-			nc = nc/10;
-			i++;
+return 0;
+}*/
+
+int Valida(int nc , int dv ){ // nc = NuDaCCor e dv = DV
+
+    int copiaNc = nc;
+    int copiaRes , copiarResf;
+	int i=1,j=0,x=0,k=0;
+	int Inv=0, res , resf;
+
+		// Obtendo o valor inverso do nc veno como um string Ex: nc=205 inv= 502
+		while (nc!=0){
+			Inv = (Inv *10 )+ (copiaNc%10);
+			copiaNc = copiaNc/10;
 			}
-		int Vet[i];
-		// obtençao do inverso numa string
-		for(x=0;x<i-1;x++){
-			Vet[x]=(nc%10);
-			nc = nc/10;
-		}
-		// conversao do string para int
-		Inv = atoi(Vet);
 		printf("inverso do nc: %d\n", Inv);
-		//  res = soma a conta com seu inverso
+
+	/*	//  res = soma a conta com seu inverso
 		res = nc + Inv;
 		printf("soma a conta com seu inverso: %d\n", res);
-	
-			// contando o digito do res, lembrando que o contador começa por 1
-			while (res>=0){
-				res = res/10;
-				j++;
+        copiaRes = res;
+
+		// contando o digito do res usando a sua copia, lembrando que o contador começa por 1
+			while (copiaRes>=0){
+				copiaRes = copiaRes/10;
+				i++;
 				}
-			// Obtençao na ordem em String o valor de res 
+            printf("%d\n", copiaRes);
+			// Obtençao na ordem em String o valor de res
 			//  decaraçao do vetore ajudando a ter o res en string.
-			// j+1 porque nos precisaremos do indico de posiçao  partir de 1
-			int Vet1[j+1];
-			for(x=j-1;x>0;x--){
-				Vet1[x]= res%10;
+		// i+1 porque nos precisaremos do indico de posiçao  partir de 1
+			int Vet[i+1];
+			for(x=i;x>0;x--){
+				Vet[x]= (res%10)*x;
 				res = res/10;
 			}
-			for(x=1;x<j+1;x++){
-				resf +=Vet1[x];
+			for(x=1;x<i+1;x++){
+				resf += Vet[x];
 			}
-			printf("resf é :%d",resf);
-	
+			printf("resf eh: %d",resf);
+            copiarResf = resf;
 				//contando o numero de digito de resf
-				while (resf>=0){
-					resf = resf/10;
-					k++;
+
+				while (copiarResf>=0){
+					copiarResf = copiarResf/10;
+					j++;
 					}
-				int Vet2[k];
-				for (x=k-1;x>=0;x++){
-					Vet2[x]= (resf%10);
+				int Vet1[j];
+				for (x=j-1;x>=0;x++){
+					Vet1[x]= (resf%10);
 					resf = resf/10;
 				}
 
-				
-	if (Vet[k-1] == dv){ printf("Validé\n");
-			Armazenar(informacao);
-		}
-	
+            if (Vet[j-1] != dv){
+                   return 1;
+                }
+        return 0;*/
 	}
 
 
 
 Cheque Cadastro(Cheque *P){
+    int Val;
 	//printf ("Digite o Numero do cheque \n");
 	//scanf("%d",(*P). );
-	printf ("Digite a Agência \n");
-	scanf("%d",&(*P).Ag );
+	printf ("Digite a AgEncia \n");
+	scanf("%d",&P->Ag );
 	printf ("Digite o Numero da conta corrente \n");
-	scanf("%d",&(*P).NuDaCCor );
+	scanf("%d",&P->NuDaCCor );
 	printf ("Digite o DV \n");
-	scanf("%d",&(*P).DV);
+	scanf("%d",&P->DV);
 	printf ("Digite o Nome \n");
-	scanf("%s",&(*P).Nome[20]);
+	scanf("%s",&P->Nome[20]);
 	printf ("Digite o Valor \n");
-	scanf("%f",&(*P).Valor);
-	Valida( (*P).NuDaCCor ,(*P).DV , P);
+	scanf("%f",&P->Valor);
+    Valida(P->NuDaCCor,P->DV );
+
+	/*if ( (Valida( P->NuDaCCor ,P->DV )) == 0){
+            printf("validado");
+        Armazenar(P);
+	}*/
 }
 
 
@@ -134,6 +138,6 @@ int main(){
 		Cadastro(&Pessoa);
 		printf ("Digite o Numero do cheque \n");
 		}
-		
+
 	return 0;
-}						 
+}
